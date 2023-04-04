@@ -1,0 +1,28 @@
+{/*
+WebSocket: is a communication protocol that enables bidirectional, full-duplex communication between a server and clients.
+It allows data to be transmitted in both directions simultaneously from the client to the server and from the server to the client
+- Server can respond without the need of an initial request from the client once connected to Websocket.
+- Enables real-time, low-latency communicationbetween web applications and servers.
+*/}
+
+{/*
+Before WebSocket, web applications had to rely on other communication protocols like HTTP (half-duplex) to exchange data with servers. 
+With HTTP, the client would initiate a request to the server, and the server would send back a response. 
+This meant that the server couldn't initiate a communication with the client unless the client initiated a request first. 
+It also meant that each request/response exchange had a certain amount of latency, as the server couldn't send data until it received a request.
+*/}
+
+{/*
+WebSocket server will attach itself to the existing HTTP server instance, and 
+listen for WebSocket upgrade requests on the same port and server as the HTTP server.
+WebSockets are just another protocol on top of the TCP/IP protocol stack.
+
+-When a client initiates a WebSocket connection request to a server, it first sends an HTTP request with an "Upgrade" header, 
+indicating that it wants to upgrade the connection from an HTTP connection to a WebSocket connection. 
+This is known as a WebSocket Upgrade request.
+
+-The server then responds with an HTTP response with a "101 Switching Protocols" status code, 
+indicating that it is willing to upgrade the connection to a WebSocket connection. 
+This response includes an "Upgrade" header indicating that the protocol has been switched to WebSocket.
+
+-After the WebSocket Upgrade process, the client and server can exchange messages using the WebSocket protocol,*/}
