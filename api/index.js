@@ -1,6 +1,6 @@
 // Express & Dotenv Setup
 const express = require('express');
-const PORT = 4000
+const PORT = 8080
 const app = express();
 require('dotenv').config();
 
