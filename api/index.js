@@ -52,7 +52,7 @@ async function getUserDataFromReq(req) {
 //	res.json('test ok');
 //)
 
-app.post('/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
 	mongoose.connect(process.env.MONGO_URL);
 	const {username, password} = req.body;
 	const hashedPassword = bcrypt.hashSync(password, bcryptSalt);
@@ -76,7 +76,7 @@ app.post('/register', async (req, res) => {
 	});
 })
 
-app.post('/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
 	mongoose.connect(process.env.MONGO_URL);
 	const {username, password} = req.body;
 	{/* createdUser = {
@@ -106,11 +106,11 @@ app.post('/login', async (req, res) => {
 	}
 })
 
-app.post('/logout', (req, res) => {
+app.post('/api/logout', (req, res) => {
 	res.cookie('token', '').json('ok');
 })
 
-app.get('/messages/:userId', async (req, res) => {
+app.get('/api/messages/:userId', async (req, res) => {
 	mongoose.connect(process.env.MONGO_URL);
 	const {userId} = req.params;
 	const userData = await getUserDataFromReq(req);
@@ -122,14 +122,14 @@ app.get('/messages/:userId', async (req, res) => {
 	res.json(messages);
 })
 
-app.get('/people', async (req, res) => {
+app.get('/api/people', async (req, res) => {
 	mongoose.connect(process.env.MONGO_URL);
 	// projection just _id and username returned for each user
 	const users = await UserModel.find({}, {'_id':1, username:1});
 	res.json(users);
 })
 
-app.get('/profile', (req, res) => {
+app.get('/api/profile', (req, res) => {
 	mongoose.connect(process.env.MONGO_URL);
   const token = req.cookies?.token;
    if (token) {
