@@ -13,6 +13,11 @@ export default function RegisterAndLoginForm() {
 	
   async function handleSubmit(ev) {
 		ev.preventDefault();
+
+		if (!username || !password) {
+      alert("Please fill out all fields");
+      return;
+    }
 		try {
 			const url = isLoggedInOrRegistered === 'register' ? '/register' : '/login';
 			const {data} =  await axios.post(url, {username, password});
