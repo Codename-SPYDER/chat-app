@@ -53,7 +53,7 @@ async function getUserDataFromReq(req) {
 //)
 
 app.post('/register', async (req, res) => {
-	const mongoose = require('mongoose');
+	mongoose.connect(process.env.MONGO_URL);
 	const {username, password} = req.body;
 	const hashedPassword = bcrypt.hashSync(password, bcryptSalt);
 	{/* createdUser = {
@@ -77,7 +77,7 @@ app.post('/register', async (req, res) => {
 })
 
 app.post('/login', async (req, res) => {
-	const mongoose = require('mongoose');
+	mongoose.connect(process.env.MONGO_URL);
 	const {username, password} = req.body;
 	{/* createdUser = {
   _id: new ObjectId(""),
@@ -111,7 +111,7 @@ app.post('/logout', (req, res) => {
 })
 
 app.get('/messages/:userId', async (req, res) => {
-	const mongoose = require('mongoose');
+	mongoose.connect(process.env.MONGO_URL);
 	const {userId} = req.params;
 	const userData = await getUserDataFromReq(req);
 	const ourUserId = userData.userId;
@@ -123,14 +123,14 @@ app.get('/messages/:userId', async (req, res) => {
 })
 
 app.get('/people', async (req, res) => {
-	const mongoose = require('mongoose');
+	mongoose.connect(process.env.MONGO_URL);
 	// projection just _id and username returned for each user
 	const users = await UserModel.find({}, {'_id':1, username:1});
 	res.json(users);
 })
 
 app.get('/profile', (req, res) => {
-	const mongoose = require('mongoose');
+	mongoose.connect(process.env.MONGO_URL);
   const token = req.cookies?.token;
    if (token) {
 	jwt.verify(token, jwtSecret, {}, (err, tokenData) => {
@@ -250,7 +250,7 @@ wss.on('connection', (connection, req) => {
 			
 		}
 		if (recipient && (text || file)) {
-			const mongoose = require('mongoose');
+			mongoose.connect(process.env.MONGO_URL);
 			const messageDoc = await MessageModel.create({
 				sender: connection.userId,
 				recipient,
