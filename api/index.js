@@ -1,6 +1,6 @@
 // Express & Dotenv Setup
 const express = require('express');
-const PORT = 8080
+const PORT = 4000
 const app = express();
 require('dotenv').config();
 
@@ -29,10 +29,7 @@ app.use(cors({
 	origin:process.env.CLIENT_URL,
 }));
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://sids-chat.vercel.app');
-  next();
-});
+
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
 
