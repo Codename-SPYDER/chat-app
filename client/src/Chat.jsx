@@ -136,29 +136,36 @@ export default function Chat() {
 
 	// Executed on Form onSubmit={}
 	function sendMessage(ev, file = null) {
-		if (ev) ev.preventDefault();
+		ev.preventDefault();
 		// .send() will set off 'message' event listener on WebSocketServer
-		ws.send(JSON.stringify({
-			recipient: selectedUserId, 
-			text: newMessageText,
-			file,
-		}));
-
-		if (file) {
-			axios.get('/messages/' + selectedUserId).then(res => {
-				setMessages(res.data);
-			});
-		} else {
-			// Clear input on Form
-			setNewMessageText('');
-			// Add new message to messages array
-			setMessages(prev => ([...prev, {
-				text: newMessageText,
-				sender: id,
-				recipient: selectedUserId,
-				_id: Date.now(),
-			}]))
+		if (!newMessageText) {
+			alert('Please fill out field to send');
+			return;
 		}
+		else {
+			ws.send(JSON.stringify({
+				recipient: selectedUserId, 
+				text: newMessageText,
+				file,
+			}));
+		}
+		
+
+		//if (file) {
+		//	axios.get('/messages/' + selectedUserId).then(res => {
+		//		setMessages(res.data);
+		//	});
+		//} else {
+		//	// Clear input on Form
+		//	setNewMessageText('');
+		//	// Add new message to messages array
+		//	setMessages(prev => ([...prev, {
+		//		text: newMessageText,
+		//		sender: id,
+		//		recipient: selectedUserId,
+		//		_id: Date.now(),
+		//	}]))
+		//}
 	}
 
 	function sendFile(ev) {
