@@ -31,6 +31,10 @@ app.use(cors({
 	credentials:true,
 	origin:process.env.CLIENT_URL,
 }));
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+  next();
+});
 
 
 app.use('/uploads', express.static(__dirname + '/uploads'));
