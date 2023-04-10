@@ -1,6 +1,9 @@
 // Express & Dotenv Setup
 const express = require('express');
-const PORT = 4000
+//const PORT = 4000
+
+const path = require('path');
+const { createServer } = require('http');
 const app = express();
 require('dotenv').config();
 
@@ -145,7 +148,9 @@ app.get('/api/profile', (req, res) => {
 })
 
 //starts an HTTP server listening on specified port
-const server = app.listen(PORT);
+//const server = app.listen(PORT);
+const server = createServer(app);
+server.listen(8080);
 
 //Create WebSocket server listening for upgrade
 const wss = new ws.WebSocketServer({server});
@@ -224,7 +229,7 @@ wss.on('connection', (connection, req) => {
 				// Problem: ws.clients does not update right after close
 				// Solution: Create own array
 				//console.log('WS users at time of deathtimer',[...wss.clients].map(client => client.username));
-			}, 3000)
+			}, 4000)
 		}, 5000);
 	}
 	

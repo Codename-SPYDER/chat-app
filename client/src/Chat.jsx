@@ -148,6 +148,14 @@ export default function Chat() {
 				text: newMessageText,
 				file,
 			}));
+			setNewMessageText('');
+			// Add new message to messages array
+			setMessages(prev => ([...prev, {
+				text: newMessageText,
+				sender: id,
+				recipient: selectedUserId,
+				_id: Date.now(),
+			}]));
 		}
 		
 
