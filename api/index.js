@@ -198,7 +198,6 @@ wss.on('connection', (connection, req) => {
 		}, []);
 		//console.log(onlineUsers.map(c => ({userId:c.userId, username:c.username})));
 		//console.log('uniqueSet', uniqueSet.map(c => ({userId:c.userId, username:c.username})));
-		
 		[...wss.clients].forEach(client => {
 			client.send(JSON.stringify({
 				// Sends a online property with an array of objects with userId, and username to each client online
