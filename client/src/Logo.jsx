@@ -11,7 +11,7 @@ export default function Logo() {
 		<div className="text-green-600 font-bold text-2xl flex gap-1 p-4 justify-between">
 			{help ? (
   <div className="fixed w-full h-screen bg-green-300/60 flex flex-col justify-center items-center z-20 top-0 left-0 font-normal">
-		<p className="bg-gray-100 mb-24 w-1/2 p-8 rounded-md text-lg border-gray-400 border-2">
+		<p className="bg-gray-100 mb-24 w-3/4 xl:w-1/2 p-8 rounded-md text-lg border-gray-400 border-2">
 			Hi, welcome to my Chatapp! <br/><br/> Allow me to provide you with a short tutorial.
 			To chat with a user please select a user on the left hand nav bar and enter a message in the chatbox on the bottom of your screen.
 			To send simply click the green send icon to send your message. If you wish to test the chat app independently you can open two
