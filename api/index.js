@@ -1,9 +1,9 @@
 // Express & Dotenv Setup
 const express = require('express');
-//const PORT = 4000
+const PORT = 4000
 
 const path = require('path');
-const { createServer } = require('http');
+//const { createServer } = require('http');
 const app = express();
 require('dotenv').config();
 
@@ -31,10 +31,10 @@ app.use(cors({
 	credentials:true,
 	origin:process.env.CLIENT_URL,
 }));
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
-  next();
-});
+//app.use((req, res, next) => {
+//  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+//  next();
+//});
 
 
 app.use('/uploads', express.static(__dirname + '/uploads'));
@@ -152,9 +152,9 @@ app.get('/api/profile', (req, res) => {
 })
 
 //starts an HTTP server listening on specified port
-//const server = app.listen(PORT);
-const server = createServer(app);
-server.listen(8080);
+const server = app.listen(PORT);
+//const server = createServer(app);
+//server.listen(4000);
 
 //Create WebSocket server listening for upgrade
 const wss = new ws.WebSocketServer({server});
