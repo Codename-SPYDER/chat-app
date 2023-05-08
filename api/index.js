@@ -1,11 +1,11 @@
 // Express & Dotenv Setup
 const express = require('express');
-const PORT = 4000
-
-const path = require('path');
-//const { createServer } = require('http');
+//const PORT = 4000
+//const path = require('path');
+const { createServer } = require('http');
 const app = express();
 require('dotenv').config();
+const _ = require("lodash"); 
 
 // Dependencies
 const fs = require('fs');
@@ -150,20 +150,16 @@ app.get('/api/profile', (req, res) => {
    }
 })
 
-//starts an HTTP server listening on specified port
-const server = app.listen(PORT);
-//const server = createServer(app);
+const server = createServer(app);
 //server.listen(4000);
 
-//Create WebSocket server listening for upgrade
 const wss = new ws.WebSocketServer({server});
 let onlineUsers = [];
 
-// on(): registers listener for 'connection' event and attaches listener to the WebSocketServer instance: (wss)
 //(connection) parameter represents the unique connection object that was just established between the client and server
 wss.on('connection', (connection, req) => {
 		
-	//read username and id from the cookie
+	//store user credentials in connection
 		const cookies = req.headers.cookie;
 		if (cookies) {
 			const tokenCookieString = cookies.split(';').find(str => str.startsWith('token='));
@@ -175,70 +171,50 @@ wss.on('connection', (connection, req) => {
 						const {userId, username} = token;
 						connection.userId = userId;
 						connection.username = username;
-	
 					})
 				}
 			}
 		}
-
+	
 	console.log(`${connection.username} connected...`);
+	//push new connection to array
+	onlineUsers.push(connection);
 
 	function notifyAboutOnlinePeople() {
-		const uniqueSet = onlineUsers.reduce((accumulator, current) => {
-			// find(): returns first object that matches criteria
-			const existing = accumulator.find(item => 
-				item.userId === current.userId && item.username === current.username
-			);
-			if (!existing) {
-				//pushes new object
-				accumulator.push(current);
-			}
-			return accumulator;
-		}, []);
-		//console.log(onlineUsers.map(c => ({userId:c.userId, username:c.username})));
-		//console.log('uniqueSet', uniqueSet.map(c => ({userId:c.userId, username:c.username})));
+		const onlineArr = onlineUsers.map(c => ({userId:c.userId, username:c.username}));
+		const uniqueArr = _.uniqBy(onlineArr, (obj) => obj.userId + obj.username);
 		[...wss.clients].forEach(client => {
 			client.send(JSON.stringify({
-				// Sends a online property with an array of objects with userId, and username to each client online
-				// {online: [{ userId: 123, username: 'Alice' },{ userId: 456, username: 'Bob' },{ userId: 789, username: 'Charlie' }]}
-			  online: uniqueSet.map(c => ({userId:c.userId, username:c.username}))
+				online: uniqueArr.map(info => (info))
 			}));
 		});
 	}
+
+	//check if user is still active
+	connection.isAlive === true;
+	connection.timer = setInterval(() => {
+	connection.ping();
+	connection.deathTimer = setTimeout(() => {
+			connection.isAlive = false;
+			clearInterval(connection.timer);
+			connection.terminate();
+			onlineUsers = onlineUsers.filter((user) => user.username !== connection.username);
+			notifyAboutOnlinePeople();
+			console.log(`Client ${connection.username} is dead`);
+		}, 4000)
+	}, 5000);
 	
-	onlineUsers.push(connection);
-	notifyAboutOnlinePeople();
 
+	connection.on('pong', () => {
+		clearTimeout(connection.deathTimer);
+	});
 
+	//user logs out
 	connection.on('close', () => {
     console.log(`${connection.username} disconnected...`);
 		onlineUsers = onlineUsers.filter((user) => user.username !== connection.username);
-		//console.log(onlineUsers.map(c => ({userId:c.userId, username:c.username})));
-		//console.log('WS users at time of close',[...wss.clients].map(client => client.username));
 		notifyAboutOnlinePeople();
   });
-
-	if (connection.isAlive === true) {
-		//Ping client every 3 seconds
-		connection.timer = setInterval(() => {
-			connection.ping();
-			connection.deathTimer = setTimeout(() => {
-				connection.isAlive = false;
-				clearInterval(connection.timer);
-				connection.terminate();
-				notifyAboutOnlinePeople();
-				console.log(`Client ${connection.username} is dead`);
-				// Problem: ws.clients does not update right after close
-				// Solution: Create own array
-				//console.log('WS users at time of deathtimer',[...wss.clients].map(client => client.username));
-			}, 4000)
-		}, 5000);
-	}
-	
-	
-	connection.on('pong', () => {
-		clearTimeout(connection.deathTimer);
-	})
 
 	connection.on('message', async (message) => { 
 		// Parse JSON string
@@ -281,5 +257,9 @@ wss.on('connection', (connection, req) => {
 
 	//notify everyone about online connected users (when someone connects)
 	notifyAboutOnlinePeople();
+});
+
+server.listen(4000, function () {
+  console.log('Listening on http://0.0.0.0:8080');
 });
 
