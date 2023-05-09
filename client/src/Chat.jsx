@@ -75,7 +75,7 @@ export default function Chat() {
 	}
 
 	function connectToWs() {
-  	if (!ws) {
+  	if (!id) {
     	console.log('User is logged out. Connection not established.');
     	return;
   	}
