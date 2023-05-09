@@ -59,7 +59,7 @@ export default function Chat() {
 
 	function logout() {
 		axios.post('/logout').then( () => {
-			ws.close(1000, 'User logged out');
+			ws.close();
 			setWs(null);
 			setId(null);
 			setUsername(null);
@@ -75,22 +75,23 @@ export default function Chat() {
 	}
 
 	function connectToWs() {
+		if (redirect) {
+			console.log('shut down ws')
+			ws.removeEventListener('close', handleClose);
+			return;
+		}
+		function handleClose() {
+			setTimeout(() => {
+				console.log('Disconnected. Trying to reconnect');
+				connectToWs();
+			}, 1000);
+		}
 		// new Websocket(ws://localhost:) used on client side - object that can establish a connection to a WebSocket server
 		// new ws.WebSocketServer({server}) used on server side - object that can listen for and handle incoming WebSocket connections from clients
 		const ws = new WebSocket(import.meta.env.VITE_WS_URL);
 		setWs(ws);
 		ws.addEventListener('message', handleMessage);
-		ws.addEventListener('close', 
-		() => {
-			if (id) {
-				setTimeout(() => {
-					console.log('Disconnected. Trying to reconnect');
-					connectToWs();
-				}, 1000);
-			} else {
-				console.log('User logged out. WebSocket connection closed.');
-			}
-		} ); 
+		ws.addEventListener('close', handleClose);
 	}
 
 	// Takes in array of clients from WebSocket
