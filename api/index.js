@@ -201,8 +201,8 @@ wss.on('connection', (connection, req) => {
 			onlineUsers = onlineUsers.filter((user) => user.username !== connection.username);
 			notifyAboutOnlinePeople();
 			console.log(`Client ${connection.username} is dead`);
-		}, 4000)
-	}, 5000);
+		}, 6000)
+	}, 8000);
 	
 
 	connection.on('pong', () => {

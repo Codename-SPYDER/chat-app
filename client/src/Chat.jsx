@@ -27,16 +27,11 @@ export default function Chat() {
 			const offlinePeople = [];
 			const offlinePeopleArr = res.data
 			.filter(obj => obj._id !== id)
-			// Includes(): to check if p._id is included in the onlinePeople array. Can be used on keys or lists.
-			// flips to false if id in onlinePeople array
 			.filter(obj => !Object.keys(onlinePeople).includes(obj._id));
-			//console.log('Object keys', Object.keys(onlinePeople));
 			offlinePeopleArr.forEach(obj => {
 				offlinePeople[obj._id] = obj.username;
 			});
 			setOfflinePeople(offlinePeople);
-			//console.log('offlinePeopleArr',offlinePeopleArr);
-			//console.log('offlinePeople',offlinePeople);
 		});
 
 	}, [onlinePeople])
