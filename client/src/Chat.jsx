@@ -75,6 +75,11 @@ export default function Chat() {
 	}
 
 	function connectToWs() {
+		const token = getCookie('token');
+  	if (!token) {
+    	console.log('User is logged out. Connection not established.');
+    	return;
+  	}
 		// new Websocket(ws://localhost:) used on client side - object that can establish a connection to a WebSocket server
 		// new ws.WebSocketServer({server}) used on server side - object that can listen for and handle incoming WebSocket connections from clients
 		const ws = new WebSocket(import.meta.env.VITE_WS_URL);
