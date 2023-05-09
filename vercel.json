@@ -2,6 +2,6 @@
   "buildCommand": "yarn install && ./node_modules/.bin/vite build",
   "framework": "vite",
   "rewrites":  [
-    {"source": "/(.*)", "destination": "/"}
+    {"source": "/chat", "destination": "/app.jsx"}
   ]
 }
