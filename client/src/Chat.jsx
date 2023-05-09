@@ -75,8 +75,7 @@ export default function Chat() {
 	}
 
 	function connectToWs() {
-		const token = getCookie('token');
-  	if (!token) {
+  	if (!!ws) {
     	console.log('User is logged out. Connection not established.');
     	return;
   	}
