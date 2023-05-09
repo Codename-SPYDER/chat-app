@@ -75,10 +75,6 @@ export default function Chat() {
 	}
 
 	function connectToWs() {
-  	if (!id) {
-    	console.log('User is logged out. Connection not established.');
-    	return;
-  	}
 		// new Websocket(ws://localhost:) used on client side - object that can establish a connection to a WebSocket server
 		// new ws.WebSocketServer({server}) used on server side - object that can listen for and handle incoming WebSocket connections from clients
 		const ws = new WebSocket(import.meta.env.VITE_WS_URL);
@@ -86,11 +82,15 @@ export default function Chat() {
 		ws.addEventListener('message', handleMessage);
 		ws.addEventListener('close', 
 		() => {
-			setTimeout(() => {
-				console.log('Disconnected. Trying to reconnect');
-				connectToWs();
-			}, 1000); 
-		}  ); 
+			if (id) {
+				setTimeout(() => {
+					console.log('Disconnected. Trying to reconnect');
+					connectToWs();
+				}, 1000);
+			} else {
+				console.log('User logged out. WebSocket connection closed.');
+			}
+		} ); 
 	}
 
 	// Takes in array of clients from WebSocket
