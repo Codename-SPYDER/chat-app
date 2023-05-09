@@ -205,9 +205,9 @@ wss.on('connection', (connection, req) => {
 	//}, 8000);
 	
 
-	connection.on('pong', () => {
-		clearTimeout(connection.deathTimer);
-	});
+	//connection.on('pong', () => {
+	//	clearTimeout(connection.deathTimer);
+	//});
 
 	//user logs out
 	connection.on('close', () => {
