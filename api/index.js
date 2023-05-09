@@ -31,11 +31,6 @@ app.use(cors({
 	credentials:true,
 	origin:process.env.CLIENT_URL,
 }));
-//app.use((req, res, next) => {
-//  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
-//  next();
-//});
-
 
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
@@ -56,10 +51,6 @@ async function getUserDataFromReq(req) {
 		}
 	}); 
 }
-
-//app.get('/test', (req, res) => {
-//	res.json('test ok');
-//)
 
 app.post('/api/register', async (req, res) => {
 	mongoose.connect(process.env.MONGO_URL);
@@ -97,7 +88,6 @@ app.post('/api/login', async (req, res) => {
   __v: 0
 	} */}
 	const foundUser = await UserModel.findOne({username});
-	//console.log(foundUser);
 	if (foundUser) {
 		const passOk = bcrypt.compareSync(password, foundUser.password);
 		if (passOk) {
@@ -203,8 +193,6 @@ wss.on('connection', (connection, req) => {
 	//		console.log(`Client ${connection.username} is dead`);
 	//	}, 6000)
 	//}, 8000);
-	
-
 	//connection.on('pong', () => {
 	//	clearTimeout(connection.deathTimer);
 	//});
