@@ -77,8 +77,6 @@ export default function Chat() {
 	function connectToWs() {
 		// new Websocket(ws://localhost:) used on client side - object that can establish a connection to a WebSocket server
 		// new ws.WebSocketServer({server}) used on server side - object that can listen for and handle incoming WebSocket connections from clients
-		//const protocol = window.location.protocol.includes('https') ? 'wss': 'ws'
-		//const ws = new WebSocket(`${protocol}://${import.meta.env.VITE_WS_URL}`);
 		const ws = new WebSocket('wss://starfish-app-6lrdh.ondigitalocean.app/');
 		setWs(ws);
 		ws.addEventListener('message', handleMessage);
@@ -109,18 +107,14 @@ export default function Chat() {
 				return true;
 			});
 		filterUndefinedPeople.forEach(obj => {people[obj.userId] = obj.username});
-		//console.log('filterUndefinedPeople', filterUndefinedPeople);
-		//console.log('online array', people); 
 		setOnlinePeople(people);
 	}
 
 	function handleMessage(ev) {
 		const messageData = JSON.parse(ev.data);
-		//console.log({ev, messageData});
 		if ('online' in messageData) {
 			// Problem: seeing duplicates in messageData.online
 			// Solution: Remove dups upstream in server
-			//console.log('online array', messageData.online); 
 			showOnlinePeople(messageData.online);
 		} else if ('text' in messageData) {
 			

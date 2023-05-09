@@ -10,20 +10,19 @@ export default function Logo() {
 	return(
 		<div className="text-green-600 font-bold text-2xl flex gap-1 p-4 justify-between">
 			{help ? (
-  <div className="fixed w-full h-screen bg-green-300/60 flex flex-col justify-center items-center z-20 top-0 left-0 font-normal">
-		<p className="bg-gray-100 mb-24 w-3/4 xl:w-1/2 p-8 rounded-md text-lg border-gray-400 border-2">
-			Hi, welcome to my Chatapp! <br/><br/> Allow me to provide you with a short tutorial.
-			To chat with a user please select a user on the left hand nav bar and enter a message in the chatbox on the bottom of your screen.
-			To send simply click the green send icon to send your message. If you wish to test the chat app independently you can open two
-			different browsers to communicate to each account. <br/><br/>
-			Here is a test account that you can use in addition to your own | username: Test_1 | pass: Test_1 |<br/><br/> 
-			Please feel free to communicate any issues you face when using the application or improvements you would like to see through the Contact Me portion of my profile website.
-			Thanks again for stopping by!
-			
-			</p>
-    <button onClick={toggleHelp} className="text-lg w-1/2 bg-green-500 text-white py-2 rounded-full bg-primary border-white shadow-md hover:scale-95 ease-in-out duration-500">Back to Site</button>
-  </div>
-) : null}
+  			<div className="fixed w-full h-screen bg-green-300/60 flex flex-col justify-center items-center z-20 top-0 left-0 font-normal">
+					<p className="overflow-y-auto bg-gray-100 mb-24 w-3/4 2xl:w-1/2 p-8 rounded-md xl:text-lg border-gray-400 border-2 max-[600px]:text-sm max-[600px]:p-3 max-[600px]:w-full max-[600px]:mb-10">
+						Hi, welcome to my Chatapp! <br/><br/> Allow me to provide you with a short tutorial.
+						To chat with a user please select a user on the left hand nav bar and enter a message in the chatbox on the bottom of your screen.
+						To send simply click the green send icon to send your message. If you wish to test the chat app independently you can open two
+						different browsers to communicate to each account. <br/><br/>
+						Here is a test account that you can use in addition to your own | username: Test_1 | pass: Test_1 |<br/><br/> 
+						Please feel free to communicate any issues you face when using the application or improvements you would like to see through the Contact Me portion of my profile website.
+						Thanks again for stopping by!
+					</p>
+    			<button onClick={toggleHelp} className="text-lg w-1/2 bg-green-500 text-white py-2 rounded-full bg-primary border-white shadow-md hover:scale-95 ease-in-out duration-500">Back to Site</button>
+  			</div>
+			) : null}
 			<div className="flex">
 				iMessage
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 mt-.5">
