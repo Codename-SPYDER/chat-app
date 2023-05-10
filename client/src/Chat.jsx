@@ -67,10 +67,10 @@ export default function Chat() {
 		ws.onclose = handleDisconnect;
 		//ws.addEventListener('message', handleMessage);
 		//ws.addEventListener('close', handleDisconnect);
-		console.log(ws);
 	}
 	
 	function logout() {
+		console.log(ws);
 		ws.onclose = null;
 		console.log(ws);
 		axios.post('/logout').then(() => {
