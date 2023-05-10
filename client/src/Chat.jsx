@@ -81,7 +81,7 @@ export default function Chat() {
 	function handleDisconnect(ev) {
 		if (ev.reason) {
 			clearTimeout(reconnectTimer);
-			console.log('Disconnected with reason:', event.reason);
+			console.log('Disconnected with reason:', ev.reason);
 			return;
 		}
 		const reconnectTimer = setTimeout(() => {
