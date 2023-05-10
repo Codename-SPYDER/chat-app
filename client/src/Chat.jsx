@@ -58,14 +58,21 @@ export default function Chat() {
 	const messagesWithoutDupes = uniqBy(messages, '_id');
 
 	function logout() {
-		axios.post('/logout').then( () => {
-			setRedirect(true);
+		axios.post('/logout').then(() => {
+			ws.removeEventListener('close', handleDisconnect);
 			ws.close();
 			setWs(null);
 			setId(null);
 			setUsername(null);
-			
+			setRedirect(true);
 		});
+	}
+
+	function handleDisconnect() {
+		setTimeout(() => {
+			console.log('Disconnected. Trying to reconnect');
+			connectToWs();
+		}, 1000);
 	}
 
 	// Console err: Rendered fewer hooks than expected. This may be caused by an accidental early return statement.
@@ -75,21 +82,14 @@ export default function Chat() {
 		return <Navigate to={'/'} />
 	}
 
-	async function connectToWs() {
+	function connectToWs() {
 		const ws = new WebSocket(import.meta.env.VITE_WS_URL);
 		setWs(ws);
 		// new Websocket(ws://localhost:) used on client side - object that can establish a connection to a WebSocket server
 		// new ws.WebSocketServer({server}) used on server side - object that can listen for and handle incoming WebSocket connections from clients
 		ws.addEventListener('message', handleMessage);
-		ws.addEventListener('close', () => {
-			if (!redirect) {
-				setTimeout(() => {
-					console.log('Disconnected. Trying to reconnect');
-					connectToWs();
-				}, 1000);
-			} 
-		});
-		}
+		ws.addEventListener('close', handleDisconnect); 
+	}
 
 
 	// Takes in array of clients from WebSocket
