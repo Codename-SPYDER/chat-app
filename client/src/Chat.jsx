@@ -57,13 +57,27 @@ export default function Chat() {
 
 	const messagesWithoutDupes = uniqBy(messages, '_id');
 
+
+	function connectToWs() {
+		const ws = new WebSocket(import.meta.env.VITE_WS_URL);
+		setWs(ws);
+		// new Websocket(ws://localhost:) used on client side - object that can establish a connection to a WebSocket server
+		// new ws.WebSocketServer({server}) used on server side - object that can listen for and handle incoming WebSocket connections from clients
+		if (id) {
+			ws.addEventListener('message', handleMessage);
+			ws.addEventListener('close', handleDisconnect);
+		} else {
+			ws.removeEventListener('close', handleDisconnect);
+		}
+	}
+	
 	function logout() {
-		axios.post('/logout').then(async () => {
-			await ws.removeEventListener('close', handleDisconnect);
-			ws.close();
-			setWs(null);
+		axios.post('/logout').then(() => {
 			setId(null);
 			setUsername(null);
+			connectToWs();
+			ws.close();
+			setWs(null);
 			setRedirect(true);
 		});
 	}
@@ -82,14 +96,6 @@ export default function Chat() {
 		return <Navigate to={'/'} />
 	}
 
-	function connectToWs() {
-		const ws = new WebSocket(import.meta.env.VITE_WS_URL);
-		setWs(ws);
-		// new Websocket(ws://localhost:) used on client side - object that can establish a connection to a WebSocket server
-		// new ws.WebSocketServer({server}) used on server side - object that can listen for and handle incoming WebSocket connections from clients
-		ws.addEventListener('message', handleMessage);
-		ws.addEventListener('close', handleDisconnect); 
-	}
 
 
 	// Takes in array of clients from WebSocket
