@@ -59,17 +59,12 @@ export default function Chat() {
 
 	function logout() {
 		axios.post('/logout').then( () => {
-			ws.removeEventListener('close', () => {
-				setTimeout(() => {
-					console.log('Disconnected. Trying to reconnect');
-					connectToWs();
-				}, 1000);
-			});
+			setRedirect(true);
 			ws.close();
 			setWs(null);
 			setId(null);
 			setUsername(null);
-			setRedirect(true);
+			
 		});
 	}
 
