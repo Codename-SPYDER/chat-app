@@ -68,6 +68,7 @@ export default function Chat() {
 	}
 	
 	function logout() {
+		console.log(ws);
 		ws.removeEventListener('close', handleDisconnect);
 		axios.post('/logout').then(() => {
 			setId(null);
