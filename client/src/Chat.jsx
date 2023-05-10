@@ -59,7 +59,12 @@ export default function Chat() {
 
 	function logout() {
 		axios.post('/logout').then( () => {
-			ws.removeEventListener('close', handleClose);
+			ws.removeEventListener('close', () => {
+				setTimeout(() => {
+					console.log('Disconnected. Trying to reconnect');
+					connectToWs();
+				}, 1000);
+			});
 			ws.close();
 			setWs(null);
 			setId(null);
@@ -78,17 +83,15 @@ export default function Chat() {
 	async function connectToWs() {
 		const ws = new WebSocket(import.meta.env.VITE_WS_URL);
 		setWs(ws);
-		
-		function handleClose() {
+		// new Websocket(ws://localhost:) used on client side - object that can establish a connection to a WebSocket server
+		// new ws.WebSocketServer({server}) used on server side - object that can listen for and handle incoming WebSocket connections from clients
+		ws.addEventListener('message', handleMessage);
+		ws.addEventListener('close', () => {
 			setTimeout(() => {
 				console.log('Disconnected. Trying to reconnect');
 				connectToWs();
 			}, 1000);
-		}
-		// new Websocket(ws://localhost:) used on client side - object that can establish a connection to a WebSocket server
-		// new ws.WebSocketServer({server}) used on server side - object that can listen for and handle incoming WebSocket connections from clients
-		ws.addEventListener('message', handleMessage);
-		ws.addEventListener('close', handleClose);
+		});
 		}
 
 
