@@ -56,13 +56,6 @@ export default function Chat() {
 	delete onlinePeopleExcludeOurUser[id];
 
 	const messagesWithoutDupes = uniqBy(messages, '_id');
-	
-	function handleClose() {
-		setTimeout(() => {
-			console.log('Disconnected. Trying to reconnect');
-			connectToWs();
-		}, 1000);
-	}
 
 	function logout() {
 		axios.post('/logout').then( () => {
@@ -88,7 +81,12 @@ export default function Chat() {
 		// new Websocket(ws://localhost:) used on client side - object that can establish a connection to a WebSocket server
 		// new ws.WebSocketServer({server}) used on server side - object that can listen for and handle incoming WebSocket connections from clients
 		ws.addEventListener('message', handleMessage);
-		ws.addEventListener('close', handleClose);
+		ws.addEventListener('close', () => {
+			setTimeout(() => {
+				console.log('Disconnected. Trying to reconnect');
+				connectToWs();
+			}, 1000);
+		});
 		}
 
 
