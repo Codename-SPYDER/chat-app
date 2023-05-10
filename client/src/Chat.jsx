@@ -58,8 +58,8 @@ export default function Chat() {
 	const messagesWithoutDupes = uniqBy(messages, '_id');
 
 	function logout() {
-		axios.post('/logout').then(() => {
-			ws.removeEventListener('close', handleDisconnect);
+		axios.post('/logout').then(async () => {
+			await ws.removeEventListener('close', handleDisconnect);
 			ws.close();
 			setWs(null);
 			setId(null);
