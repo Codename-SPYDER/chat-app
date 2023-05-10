@@ -65,6 +65,7 @@ export default function Chat() {
 		// new ws.WebSocketServer({server}) used on server side - object that can listen for and handle incoming WebSocket connections from clients
 		ws.addEventListener('message', handleMessage);
 		ws.addEventListener('close', handleDisconnect);
+		console.log(ws);
 	}
 	
 	function logout() {
