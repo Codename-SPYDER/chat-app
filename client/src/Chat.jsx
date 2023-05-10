@@ -68,6 +68,7 @@ export default function Chat() {
 	}
 	
 	function logout() {
+		ws.removeEventListener('close', handleDisconnect);
 		axios.post('/logout').then(() => {
 			setId(null);
 			setUsername(null);
@@ -81,8 +82,7 @@ export default function Chat() {
 		setTimeout(() => {
 			console.log('Disconnected. Trying to reconnect');
 			connectToWs();
-			ws.removeEventListener('close', handleDisconnect);
-		}, 3000);
+		}, 2000);
 	}
 
 	// Console err: Rendered fewer hooks than expected. This may be caused by an accidental early return statement.
