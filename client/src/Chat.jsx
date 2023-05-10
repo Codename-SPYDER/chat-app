@@ -63,15 +63,13 @@ export default function Chat() {
 		setWs(ws);
 		// new Websocket(ws://localhost:) used on client side - object that can establish a connection to a WebSocket server
 		// new ws.WebSocketServer({server}) used on server side - object that can listen for and handle incoming WebSocket connections from clients
-		ws.onmessage = handleMessage;
-		ws.onclose = handleDisconnect;
-		//ws.addEventListener('message', handleMessage);
-		//ws.addEventListener('close', handleDisconnect);
+		ws.addEventListener('message', handleMessage);
+		ws.addEventListener('close', handleDisconnect);
 	}
 	
 	function logout() {
 		console.log(ws);
-		ws.onclose = null;
+		ws.removeEventListener('close', null);
 		console.log(ws);
 		axios.post('/logout').then(() => {
 			setId(null);
