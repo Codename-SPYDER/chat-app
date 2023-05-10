@@ -86,7 +86,7 @@ export default function Chat() {
 		setTimeout(() => {
 			console.log('Disconnected. Trying to reconnect');
 			connectToWs();
-		}, 1000);
+		}, 3000);
 	}
 
 	// Console err: Rendered fewer hooks than expected. This may be caused by an accidental early return statement.
