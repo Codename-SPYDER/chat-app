@@ -68,9 +68,9 @@ export default function Chat() {
 	}
 	
 	function logout() {
-		console.log(ws);
-		ws.removeEventListener('close', null);
-		console.log(ws);
+		console.log(getEventListeners(ws));
+		ws.removeEventListener('close', handleDisconnect);
+		console.log(getEventListeners(ws));
 		axios.post('/logout').then(() => {
 			setId(null);
 			setUsername(null);
