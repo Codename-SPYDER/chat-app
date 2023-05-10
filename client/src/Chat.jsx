@@ -75,9 +75,9 @@ export default function Chat() {
 		return <Navigate to={'/'} />
 	}
 
-	function connectToWs() {
-		const ws_obj = new WebSocket(import.meta.env.VITE_WS_URL);
-		setWs(ws_obj);
+	async function connectToWs() {
+		const ws = new WebSocket(import.meta.env.VITE_WS_URL);
+		setWs(ws);
 		// new Websocket(ws://localhost:) used on client side - object that can establish a connection to a WebSocket server
 		// new ws.WebSocketServer({server}) used on server side - object that can listen for and handle incoming WebSocket connections from clients
 		ws.addEventListener('message', handleMessage);
