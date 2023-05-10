@@ -66,22 +66,25 @@ export default function Chat() {
 		ws.addEventListener('message', handleMessage);
 		ws.addEventListener('close', handleDisconnect);
 	}
-	
+
 	function logout() {
-		console.log(getEventListeners(ws));
 		ws.removeEventListener('close', handleDisconnect);
-		console.log(getEventListeners(ws));
 		axios.post('/logout').then(() => {
 			setId(null);
 			setUsername(null);
-			ws.close();
+			ws.close(1000, "Client has disconnected");
 			setWs(null);
 			setRedirect(true);
 		});
 	}
 
-	function handleDisconnect() {
-		setTimeout(() => {
+	function handleDisconnect(ev) {
+		if (ev.reason) {
+			clearTimeout(reconnectTimer);
+			console.log('Disconnected with reason:', event.reason);
+			return;
+		}
+		const reconnectTimer = setTimeout(() => {
 			console.log('Disconnected. Trying to reconnect');
 			connectToWs();
 		}, 2000);
