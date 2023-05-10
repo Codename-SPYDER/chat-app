@@ -180,23 +180,6 @@ wss.on('connection', (connection, req) => {
 		});
 	}
 
-	//check if user is still active
-	//connection.isAlive === true;
-	//connection.timer = setInterval(() => {
-	//connection.ping();
-	//connection.deathTimer = setTimeout(() => {
-	//		connection.isAlive = false;
-	//		clearInterval(connection.timer);
-	//		connection.terminate();
-	//		onlineUsers = onlineUsers.filter((user) => user.username !== connection.username);
-	//		notifyAboutOnlinePeople();
-	//		console.log(`Client ${connection.username} is dead`);
-	//	}, 6000)
-	//}, 8000);
-	//connection.on('pong', () => {
-	//	clearTimeout(connection.deathTimer);
-	//});
-
 	//user logs out
 	connection.on('close', () => {
     console.log(`${connection.username} disconnected...`);
