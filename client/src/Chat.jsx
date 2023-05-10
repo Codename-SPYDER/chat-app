@@ -63,31 +63,25 @@ export default function Chat() {
 		setWs(ws);
 		// new Websocket(ws://localhost:) used on client side - object that can establish a connection to a WebSocket server
 		// new ws.WebSocketServer({server}) used on server side - object that can listen for and handle incoming WebSocket connections from clients
-		if (id) {
 			ws.addEventListener('message', handleMessage);
-			ws.addEventListener('close', handleDisconnect);
-		} else {
-			ws.removeEventListener('close', handleDisconnect);
-		}
 	}
 	
 	function logout() {
 		axios.post('/logout').then(() => {
 			setId(null);
 			setUsername(null);
-			connectToWs();
 			ws.close();
 			setWs(null);
 			setRedirect(true);
 		});
 	}
 
-	function handleDisconnect() {
-		setTimeout(() => {
-			console.log('Disconnected. Trying to reconnect');
-			connectToWs();
-		}, 3000);
-	}
+	//function handleDisconnect() {
+	//	setTimeout(() => {
+	//		console.log('Disconnected. Trying to reconnect');
+	//		connectToWs();
+	//	}, 3000);
+	//}
 
 	// Console err: Rendered fewer hooks than expected. This may be caused by an accidental early return statement.
 	// Problem: returned a value before executing all the hooks that were declared (useEffect)
