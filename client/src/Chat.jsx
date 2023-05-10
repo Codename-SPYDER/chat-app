@@ -20,7 +20,7 @@ export default function Chat() {
 	
 	useEffect(() => {
 			connectToWs();
-	}, [])
+	}, [selectedUserId]);
 
 	useEffect(() => {
 		axios.get('/people').then(res => {
